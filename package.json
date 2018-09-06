@@ -1,0 +1,45 @@
+{
+  "name": "joomok0901",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@ercpereda/react-native-accordion": "^2.0.6",
+    "@expo/vector-icons": "^6.3.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.2",
+    "firebase": "^5.0.3",
+    "immutability-helper": "^2.7.1",
+    "native-base": "^2.8.0",
+    "react": "^16.4.1",
+    "react-native": "0.55.2",
+    "react-native-accordion": "^1.0.1",
+    "react-native-datepicker": "^1.7.2",
+    "react-native-debugger": "^1.1.0",
+    "react-native-drawer": "^2.5.0",
+    "react-native-easy-toast": "^1.1.0",
+    "react-native-firebase": "^4.3.8",
+    "react-native-modal-dropdown": "^0.6.2",
+    "react-native-phone-call": "^1.0.7",
+    "react-native-render-html": "^3.10.0",
+    "react-native-router-flux": "^4.0.1",
+    "react-native-storage": "^0.2.2",
+    "react-native-swiper": "^1.5.13",
+    "react-native-swiper-flatlist": "^1.0.7",
+    "react-native-vector-icons": "^5.0.0",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel-jest": "23.4.2",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "23.5.0",
+    "react-test-renderer": "16.3.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
