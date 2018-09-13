@@ -65,7 +65,10 @@ class Payment extends Component {
 
         let formdata = new FormData();
         //체크박스 확인
-        if( this.state.deliveryCheckd === null ){        
+        if( this.state.deliveryCheckd === null ){   
+            this.setState({
+                paymentButtonBlock : false
+            })
             return alert("배송일을 선택해주세요")
         }
 
@@ -81,6 +84,7 @@ class Payment extends Component {
             })
             .then((response) => response.json())
             .then((responseData) => {
+                
                 var filnalPrice = this.props.FinalPriceData.finalTotalPrice.replace(/\,/g,'');
                 var filnalVat = this.props.FinalPriceData.vat.replace(/\,/g,'');
 
@@ -117,8 +121,6 @@ class Payment extends Component {
                 // formdata.append('allat_biz_no', '3084000454') // 사업자번호
                 // formdata.append('allat_sell_mm', '02') // 00,0,01,1 : 일시불 (할부 사용시 2개월 이상으로 설정 )
 
-                console.log('최종결제 폼데이터 ', formdata)
-
                 fetch('http://pay.joomok.net/paygate/required',{
                     method: 'post',
                     headers: {
@@ -132,7 +134,6 @@ class Payment extends Component {
                     return response.text() 
 
                 }).then((text)=>{ 
-                    console.log("사이트 주소 받아오기!!",text)
                     JSON.stringify(text)
                     let url = JSON.parse(text)
 
@@ -149,7 +150,6 @@ class Payment extends Component {
                 return alert('결제실패 잠시 후 다시 시도해 주십시오.')
             })
             .done(()=>{
-                    console.log('done!!!!')
                     this.setState({ paymentButtonBlock : false })
                 }
             );
@@ -176,11 +176,8 @@ class Payment extends Component {
     }
 
     render() {
-
-        console.log(width)
-
+        
         let that = this;
-
         return (
           <Container style={{backgroundColor:"#0099ff",}}>
             <BackGroundImage/>
@@ -311,13 +308,9 @@ class Payment extends Component {
                         }}>배송정보저장</Text>
                     </View>
                 </Content>
-                <View style={{ width: Platform.ios? "94%" : '98%', marginLeft: Platform.ios? "3%" : '1%', marginTop:40, marginBottom:20, justifyContent:'center', }}>
-                    <View>
-                        <Text style={{fontSize:14, textAlign:'center',}}> {`신용카드(일반)  : 삼성,신한,현대,롯데,하나(외환),NH 
-                        ISP결제: BC, 국민`}</Text>
-                    </View>
+                <View style={{ width: Platform.ios? "94%" : '98%', marginLeft: Platform.ios? "3%" : '1%', marginTop:10, marginBottom:20, justifyContent:'center', }}>
                     <View style={{  flexDirection:"row", justifyContent:"space-around",}}>
-                    <Button
+                    {/* <Button
                         onPress={
                             ()=> {
                                 this.setState({
@@ -335,33 +328,40 @@ class Payment extends Component {
                         }}
                     >
                         <Text style={{color:'#fff', fontSize:16, fontWeight:'bold',}}>주류 직불카드</Text>
-                    </Button>
-                    <Button
-                        onPress={
-                            ()=> {
-                                this.setState({
-                                    paymentButtonBlock : true
-                                })
-                                that.startPayment("card", null)
+                    </Button> */}
+     
+                        <Button
+                            onPress={
+                                ()=> {
+                                    this.setState({
+                                        paymentButtonBlock : true
+                                    })
+                                    that.startPayment("card", null)
+                                }
                             }
-                        }
-                        style={styles.paymentButton}
-                    >
-                        <Text style={{color:'#0099ff', fontSize:16,}}>알반 신용카드</Text>
-                    </Button>
-                    <Button
-                        onPress={
-                            ()=> {
-                                this.setState({
-                                    paymentButtonBlock : true
-                                })
-                                that.startPayment("card", "bcCard")
-                            }
-                        }
-                        style={styles.paymentButton}
-                    >
-                        <Text style={{color:'#0099ff', fontSize:16,}}>BC,국민카드</Text>
-                    </Button>
+                            style={styles.paymentButton}
+                        >
+                            <Text style={{color:'#0099ff', fontSize:16,}}>신용카드(일반)</Text>
+                            <Text style={{color:'#0099ff', fontSize:10,}}>삼성,신한,현대,롯데,하나(외환),NH</Text>
+                        </Button>
+            
+                    
+        
+                        <Button
+                                onPress={
+                                    ()=> {
+                                        this.setState({
+                                            paymentButtonBlock : true
+                                        })
+                                        that.startPayment("card", "bcCard")
+                                    }
+                                }
+                                style={styles.paymentButton}
+                            >
+                            <Text style={{color:'#0099ff', fontSize:16,}}>ISP결제</Text>
+                            <Text style={{color:'#0099ff', fontSize:10,}}>BC, 국민</Text>
+                        </Button>
+      
                     </View>
                 </View>
             </View>
@@ -388,7 +388,7 @@ class Payment extends Component {
             />
           </Container>
         );
-    }
+    }ㅊuserBirth
 }
 
 const styles = StyleSheet.create({
@@ -418,9 +418,11 @@ const styles = StyleSheet.create({
     },
     paymentButton:{
         flex:1, 
-        height:45,
-        marginLeft:5 , 
+        height:80,
+        marginLeft:5,
+        marginRight:5,
         justifyContent:'center', 
+        flexDirection:'column',
         backgroundColor:"rgba(0,0,0,0)",
         borderRadius: 4,
         borderWidth: 2,

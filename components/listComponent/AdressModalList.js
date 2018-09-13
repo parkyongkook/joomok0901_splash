@@ -17,7 +17,7 @@
     render() {
       return (
         <View style={{marginTop:10 , backgroundColor:"#fff",}} >
-            <View style={{flexDirection:"row", justifyContent:"space-between",}}>
+            <View style={{flexDirection:"row",}}>
                 <View>
                     <Text style={{fontSize:12,}}>지번 : {this.props.jibun} </Text>
                     <Text style={{fontSize:12,}}>신주소 : {this.props.roadbun} </Text>

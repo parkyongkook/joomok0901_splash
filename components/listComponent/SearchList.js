@@ -9,6 +9,7 @@ class SearchList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            imgUrl: this.props.imgUrl,
             drinkData: {
                 code: this.props.uniqId,
                 title: this.props.title,
@@ -79,7 +80,7 @@ class SearchList extends React.Component {
             .then((response) => response.json())
             .then((responseData) => {
                 alert("메시지를 보냈습니다.")
-                console.log(responseData)
+
             })
             .catch((error) => {
                 alert('problem while adding data');
@@ -89,12 +90,13 @@ class SearchList extends React.Component {
     }
 
     _onError = () => { 
-        return null
+       this.setState({
+         imgUrl : `http://joomok.net/default/M0x00x${this.props.drinkType}00000000x.jpg`
+       })
     }
 
     render() {
         return (
-
             this.props.title === "제품이 없습니다." ?
                 <View style={{flex:1, marginLeft:20, marginRight:20}}>
                 
@@ -110,7 +112,7 @@ class SearchList extends React.Component {
                     <View style={{flex:2}}>
                         <TextInput 
                             placeholder={`필요한 제품을 남겨주세요
-예) 제품명 : 참이슬 용량 :350ml`}
+예) 제품명 : 참이슬 용량 :350ml`}fil
                             multiline={true} 
                             onChangeText={ this.memoTextActivate } 
                             underlineColorAndroid={"#fff"}
@@ -149,19 +151,20 @@ class SearchList extends React.Component {
                     <Row style={{ marginTop: 10, height: 80, }}>
                         <Col style={{ flex: 3 }}>
                             <Image
-                                // source={require('../../assets/img/soju.png')}
-                                source={{uri: this.props.imgUrl }}
+                                source={{uri: this.state.imgUrl }}
                                 onError={this._onError}
-                                style={{ width: 80, height: 80, marginLeft: 20, }}
+                                style={{ 
+                                    height: 80, marginLeft: 20, resizeMode: "contain",
+                                }}
                             />
                         </Col>
 
-                        <Col style={{ flex: 4 }}>
+                        <Col style={{ flex: 4.5 }}>
 
-                            <Row><Text>{this.props.title}</Text></Row>
-                            <Row><Text>{this.props.unit + "개"}</Text></Row>
+                            <Row><Text style={{fontSize:14,}}>{this.props.title}</Text></Row>
+                            <Row><Text style={{fontSize:14,}}>{"1박스(짝) "+this.props.unit + "개"}</Text></Row>
                             <Row>
-                                <Text>수량</Text>
+                                <Text style={{fontSize:14,}}>수량</Text>
                                 <View style={{ flexDirection: "row", marginLeft: 10, }}>
 
                                     <TouchableOpacity onPress={this.counter("minus")}>
@@ -169,7 +172,7 @@ class SearchList extends React.Component {
                                     </TouchableOpacity>
 
                                     <View style={{ width: 40, height: 20, marginLeft: 5, marginRight: 5, alignItems: 'center', borderColor: '#999', }}>
-                                        <Text style={{ marginLeft: 3, marginRight: 3, color: '#777', fontSize: 18, marginTop: 1, }}>{this.state.drinkData.qty}</Text>
+                                        <Text style={{ marginLeft: 3, marginRight: 3, color: '#777', fontSize: 14, marginTop: 1, }}>{this.state.drinkData.qty}</Text>
                                     </View>
 
                                     <TouchableOpacity onPress={this.counter("plus")}>
@@ -179,14 +182,14 @@ class SearchList extends React.Component {
                             </Row>
                         </Col>
 
-                        <Col style={{ flex: 3, justifyContent: "center", alignItems: "center" }}>
+                        <Col style={{ flex: 2, justifyContent: "center", alignItems: "center" }}>
                             <TouchableOpacity
                                 onPress={this.clickCartButton()}
                                 id={this.props.uniqId}
                             >
                                 <Image
                                     source={require('../../assets/img/cart.jpg')}
-                                    style={{ width: 60, resizeMode: "contain", marginRight: 10, }}
+                                    style={{ width: 60, resizeMode: "contain", marginRight: 20, }}
                                 />
                                 {/* <Icon type="MaterialCommunityIcons" name='cart' style={{fontSize:60, color:'#000',}} /> */}
                             </TouchableOpacity>

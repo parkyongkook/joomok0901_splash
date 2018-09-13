@@ -5,6 +5,7 @@
         Header, Grid, Col, Row, List, ListItem,Icon } from 'native-base';
 
  import AdressModalList from './listComponent/AdressModalList'; 
+ import Head from './Head';
 
  import {Actions} from 'react-native-router-flux';
  import {connect} from 'react-redux';
@@ -31,7 +32,7 @@
         }
 
       return (
-        <View>  
+        <View>
             <Modal
                 presentationStyle="pageSheet"
                 animationType="fade"
@@ -40,8 +41,12 @@
                 onRequestClose={() => {
                     alert('Modal has been closed.');
                 }}
+                style={{ backgroundColor: "#0099ff", }}
                
             >
+                <Head
+                    backgroundColor={true}
+                />  
                 <View  style={{marginTop:120,alignItems:"center", alignContent:"center",}}>
                     <ScrollView>
                         {   
@@ -49,20 +54,20 @@
                         }
                     </ScrollView>
                 </View>
-             <View style={{flex:1, flexDirection:"row", justifyContent:"center",}}>
-                <Button 
-                    style={{width:100, justifyContent:"center", marginLeft:20, 
-                            marginRight:20, position:"absolute", bottom:50, 
-                          }}
-                    onPress={
-                        ()=> this.props.closeModal()
-                    }      
-                >
-                    <Text>닫기</Text>
-                </Button>
-             </View>   
+                <View style={{flex:1, flexDirection:"row", justifyContent:"center",}}>
+                    <Button 
+                        style={{width:100, justifyContent:"center", marginLeft:20, 
+                                marginRight:20, position:"absolute", bottom:50, 
+                            }}
+                        onPress={
+                            ()=> this.props.closeModal()
+                        }      
+                    >
+                        <Text>닫기</Text>
+                    </Button>
+                </View>   
 
-        </Modal>
+            </Modal>
        </View>
       )
     }

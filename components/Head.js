@@ -17,10 +17,6 @@ export default class Head extends React.Component {
         this.props.title ? this.setState({ logoTitle: this.props.title }) : this.setState({ logoTitle: "JOOMOK" })
     }
 
-    consolefunc() {
-        console.log("어 돌아가네!!?????")
-    }
-
     render() {
         const beforePage = (
             <Button transparent 
@@ -41,7 +37,7 @@ export default class Head extends React.Component {
         return (
             <Header noShadow style={{
                 height: Platform.OS === "ios" ? 80 : 90,
-                backgroundColor: "rgba(0,0,0,0)",
+                backgroundColor: this.props.backgroundColor ? "#0099ff" : "rgba(0,0,0,0)",
             }}>
                 <StatusBar
                     backgroundColor="blue"

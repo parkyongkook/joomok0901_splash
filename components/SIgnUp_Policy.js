@@ -37,7 +37,6 @@ export default class SignUp_Policy extends Component {
   }
 
   render() {
-      console.log(userInfo.Terms)
     return (
       <Container style={{flex:1, backgroundColor:"#0099ff",}}>
 
@@ -149,7 +148,9 @@ export default class SignUp_Policy extends Component {
                                 onPress={
                                     ()=> {
                                         if( this.state.checked1 && this.state.checked2 ){
-                                            Actions.SignUp_Authentication({})  
+                                            Actions.MyWeb({
+                                                url : "http://pay.joomok.net/certify/doit"
+                                            })  
                                         }else{
                                             alert("이용약관에 동의해주세요")  
                                         }
@@ -168,16 +169,7 @@ export default class SignUp_Policy extends Component {
                                         borderWidth: 3,
                                         borderColor:"#0099ff",
                                     }} 
-                            onPress={
-
-                                ()=> {
-                                    if( this.state.checked1 && this.state.checked2 ){
-                                        Actions.SignUp_Authentication({})  
-                                    }else{
-                                        alert("이용약관에 동의해주세요")  
-                                    }
-                                }
-                                }
+                                    onPress={()=> Actions.pop()}
                             >
                                 <Text style={{color:"#0099ff", fontSize:18,}}>취   소</Text>
                             </Button> 

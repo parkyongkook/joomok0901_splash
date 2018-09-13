@@ -11,12 +11,14 @@ import BackGroundImage from './util/backGroundImage';
 import CartList from './listComponent/CartList'; 
 import Head from './Head';
 
+let onClickDeleteButton = false;
 class Cart extends Component {
     constructor(props) {
         super(props);
         this.state = {  
-          idSaveChecked: false,
-          allChecked: false,
+          deleteProduct : false,
+          idSaveChecked : false,
+          allChecked : false,
           cartCheckCount : 0,
           cartData : {
             usridx: this.props.usridx,
@@ -58,7 +60,6 @@ class Cart extends Component {
         })
         .then((response) => response.json())
         .then((responseData) => {
-            console.log(responseData)
             Actions.BuyProduct({
                 cartListData : responseData.data,
                 mapToCartList : that.mapToCartList,
@@ -109,17 +110,15 @@ class Cart extends Component {
 
     allCheckedHandler(onlyFalse){
 
-        if( onlyFalse==='disable' ){
-
+        if( onlyFalse === 'disable' ){
             this.setState({
                 idSaveChecked : false,
-                allChecked : false,
+                allChecked : false ,
                 cartData : {
                     usridx: this.props.usridx,
                     carts :[]
                 }
             }) 
-
             return
         }
 
@@ -129,6 +128,7 @@ class Cart extends Component {
             })
             onlyFalse = null;
         }else{
+
             //현재 체크값이 트루라면 조건 1.
             this.state.idSaveChecked ?  
                 //이곳에서 버튼을 눌렀다면 조건 1-1.
@@ -147,6 +147,7 @@ class Cart extends Component {
                 this.setState({
                     idSaveChecked : false,
                 })
+
             //현재 체크값이 펄스라면 조건 2.    
             : onlyFalse === "empty" ? 
             this.setState({
@@ -160,13 +161,24 @@ class Cart extends Component {
         }
     }
 
-    disableChecked(){
+    disableChecked(action){
+
+        if( action == 'onClickDeleteButton'){
+            onClickDeleteButton = true
+        }
+
+        if( action == 'reCorver' ){
+            onClickDeleteButton = false
+        }
+
         this.setState({
             cartCheckCount : 0
         })
+
     }
 
     mapToCartList = (data, bool) => {
+
         return data.map((cartListData, i) => {
             return (
                 <CartList 
@@ -183,6 +195,7 @@ class Cart extends Component {
                     allCheckedHandler = { this.allCheckedHandler } 
                     cartListIdsave = { this.cartListIdsave }
                     isVisibleItem = {bool}
+                    deleteProduct = { onClickDeleteButton }
                     index = {i} 
                     key={i}
                 />);
@@ -190,7 +203,7 @@ class Cart extends Component {
     }
 
     render() {
-        console.log('reOrderCartListData',this.state.cartData)
+        deleteProduct = false;
         return (
           <Container style={{backgroundColor:"#0099ff",}}>
             <BackGroundImage/>
@@ -217,7 +230,9 @@ class Cart extends Component {
                         />
                         <Text style={{marginLeft:15, marginTop:8, color:"#555"}}>전체선택 총</Text>
                         <Text style={{marginLeft:15, marginTop:8, color:"red",}}>{this.state.cartCheckCount}</Text>
-                        <Text style={{marginLeft:15, marginTop:8, color:"#555"}}>/ {this.props.reOrderCartListData ? this.props.reOrderCartListData.length : this.props.cartListData.length}개</Text>
+                        <Text style={{marginLeft:15, marginTop:8, color:"#555"}}>/ 
+                            {this.props.reOrderCartListData ? this.props.reOrderCartListData.length : this.props.cartListData.length}개
+                        </Text>
                     </TouchableOpacity>
                     
                     <View style={{

@@ -13,13 +13,13 @@ import Head from './Head';
 import BackGroundImage from './util/backGroundImage';
 import AndroidSwiper from './mainSwiper/androidSwiper'
 import IosSwiper from './mainSwiper/iosSwiper'
+// import { AppLoading } from "expo";
 
 import call from 'react-native-phone-call'
 
 let iosSlider;
 let andSlider;
 let newOrderListData = [];
-
 const args = {
     number: '01089528963',
     prompt: false
@@ -30,7 +30,7 @@ class Main extends React.Component {
         super(props);
         this.state = {
             showAlert : false,
-            isLoading: null,
+            isLoading: true,
             loading: true,
             dataSource: null,
             chartData: {
@@ -58,9 +58,8 @@ class Main extends React.Component {
                 return fetch('https://api.joomok.net/products?posit=list&usridx=' + this.props.usridx + '&istart=0&ilimit=1000&')
                     .then((response) => response.json())
                     .then((drinkListJson) => {
-                        console.log('drinkListJson모든데이터 받아오기',drinkListJson[0])
                         this.setState({
-                            isLoading: false,
+                            isLoading: true,
                             dataSource: drinkListJson,
                         },
                         function () {
@@ -132,6 +131,10 @@ class Main extends React.Component {
     }
 
     reOrderProduct(data, title) {
+
+        this.setState({
+            isLoading: true
+        })
 
         let cartArr = { 
             carts :[],
@@ -217,6 +220,9 @@ class Main extends React.Component {
     
 
     render() {
+        // if (this.state.isLoading) {
+        //     return <AppLoading />;
+        // }
         return (
             <View style={{ flex: 1, backgroundColor: "#0099ff", }}>
 
@@ -271,7 +277,9 @@ class Main extends React.Component {
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.customerButtom}
-                        onPress={() => this.reOrderProduct( newOrderListData, '바로구매')}
+                        onPress={
+                            () => this.reOrderProduct( newOrderListData, '바로구매')
+                        }
                     >
                         <Image
                             style={styles.imageStyle}
@@ -302,24 +310,8 @@ class Main extends React.Component {
 거래정보 및 거래에 대하여 (주)두몫은 일체의 책임을 지지 않습니다`}
                     </Text>
                 </View>
-
-                {
-                    this.state.isLoading ?
-                        <ActivityIndicator
-                            size="large"
-                            color="#0000ff"
-                            style={{
-                                width: "100%",
-                                height: "100%", position: "absolute",
-                                backgroundColor: "#fff", opacity: 0.5,
-                            }}
-                        />
-                        :
-                        null
-                }
                 <Toast ref="toast" />
             </View>
-
         );
     }
 }

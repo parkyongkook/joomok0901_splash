@@ -37,17 +37,33 @@ class CartList extends React.Component {
     componentDidUpdate(){
         //삭제 후 스테이트에 리듀어의 프롭값이 제대로 전달 되기 위해 컴포넌트가 업데이트 되면 한번씩 재할당 후 스테이트를 다시 셋 시킴
         if( this.state.cartData.title !== this.props.title || this.state.cartData.qty !== this.props.qty ){
+
             this.state.cartData.title = this.props.title;
             this.state.cartData.code = this.props.code;
             this.state.cartData.qty = this.props.qty;
+            this.state.cartCount = this.props.qty;
             this.state.idSaveChecked = false;
-            this.setState({})   
+            this.setState({
+
+            })   
         }
        isModify = false;
-    }   
 
-    componentWillReceiveProps(){
+    }  
+    
+    componentWillReceiveProps(nextProps){
         // 리스트 컴포넌트 맵핑시 true false값을 판단하여 수량과, 다음 구매로 넘길 id로 구성된 array를 만듦 
+
+        //현재의 프롭값과 수정된 프랍값이 다른경우 실행
+        if( this.props.deleteProduct !== nextProps.deleteProduct ){
+            if( nextProps.deleteProduct === true ){
+                this.props.disableChecked('reCorver')
+                return 
+            }
+            return
+        }
+
+
         if( this.props.allChecked ){
             this.setState({ idSaveChecked : false });
             if(this.state.idSaveChecked){
@@ -59,8 +75,10 @@ class CartList extends React.Component {
                 this.setState({ idSaveChecked : true });
                 this.props.cartCounter(+1);
                 this.props.cartListIdsave(this.state.cartData, "push") 
-            }
+            } 
         }
+
+
     }
 
     counter(action){
@@ -73,9 +91,12 @@ class CartList extends React.Component {
     }
 
     clickToDeleteButton( id ){
+        this.props.disableChecked('onClickDeleteButton')
+        this.props.allCheckedHandler('disable') 
         this.props.deleteCartData(id)
         this.props.cartListDelete(id)
     }
+
     clickToCheckBox(){
         if(this.state.idSaveChecked){
             this.setState({idSaveChecked: false })
@@ -205,13 +226,10 @@ class CartList extends React.Component {
                             alignItems:"center",
                             borderWidth:1, 
                             borderColor:'#0099ff',
-                        }} 
-                        onPress={
-                        ()=> {
-                            
-                            this.clickToDeleteButton(this.props.code, this.state.cartData)
-                        }
-                        }
+                            }} 
+                            onPress={
+                                ()=> {this.clickToDeleteButton(this.props.code, this.state.cartData)}
+                            }
                         >
                             <Text style={{fontSize:14, color:'#0099ff',}}>삭제</Text>
                         </TouchableOpacity>

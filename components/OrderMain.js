@@ -18,9 +18,8 @@ class OrderMain extends Component {
             SearchList: false,
             SeachKeywords: "",
             searchListData: this.props.searchList,
-            mapComponents: null,
             cartList: [],
-            stateOfComponent: false,
+            stateOfComponent: this.props.stateOfComponent,
         }
         this.SearchListActivator = this.SearchListActivator.bind(this);
         this.viewSeachList = this.viewSeachList.bind(this);
@@ -36,6 +35,7 @@ class OrderMain extends Component {
         this.props.cartListData ? 
         this.setState({ cartList: this.props.cartListData }) : 
         this.setState({ cartList: [] });
+        this.state.stateOfComponent ? this.props.changeStateOfcomponent : null
     }
 
     returnToDrinkCategory( categoryType, imgUrl, title ){
@@ -71,7 +71,7 @@ class OrderMain extends Component {
         }
     }
 
-    viewSeachList(userType, drinkType, isSearch) {
+    viewSeachList( userType, drinkType, isSearch) {
 
         function drinkListFilterFunc(obj) {
             if (isSearch && drinkType !== undefined) {
@@ -92,12 +92,13 @@ class OrderMain extends Component {
         const coll = this.props.drinkData.filter(drinkListFilterFunc);
 
         this.setState({
-            mapComponents: this.mapToSearchList(coll),
+            mapComponents: this.mapToSearchList(coll, drinkType),
             stateOfComponent: true
         })
+        this.props.stateOfComponent
     }
 
-    mapToSearchList(data) {
+    mapToSearchList(data , drinkType) {
         if( data.length === 0 ){
             return <SearchList 
                 title = {"제품이 없습니다."}
@@ -106,6 +107,7 @@ class OrderMain extends Component {
         }else{
             return data.map((mergeDayData, i) => {
                 return (<SearchList
+                    drinkType ={drinkType}
                     imgUrl = {mergeDayData.pd_file}
                     usridx = {this.props.usridx}
                     title = {mergeDayData.pd_str}
@@ -114,7 +116,6 @@ class OrderMain extends Component {
                     increamentCartCount = {this.increamentCartCount}
                     initioalCounter = {0}
                     uniqId = {mergeDayData.idx}
-                    index = {i}
                     key = {i}
                 />);
             })
@@ -148,21 +149,22 @@ class OrderMain extends Component {
         };
 
         const coll = this.state.cartList.filter(newCartList);
-        this.setState({cartList : coll})
+        this.setState({
+            cartList : coll,
+        })
+
     }
 
     clickToCartButton(){
         //카트리스트에 담긴 상품이 0이 아니라면 (0보다 많으면) 카트로 넘어감.
         if ( this.state.cartList.length !== 0 ) {
             Actions.Cart({
-                deleteCartData : this.deleteCartData
+                deleteCartData : this.deleteCartData,
             });
         }
     }
 
     render() {
-
-        console.log('회원자격', this.props.userData.product_type)
         const category = (
             <View>
                 <View style={{ flex: 1, flexDirection: "row", }}>
